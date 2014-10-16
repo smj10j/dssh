@@ -1,0 +1,160 @@
+#! /usr/bin/env bash
+
+
+##############################################################
+####################### Usage & Options ######################
+##############################################################
+
+usage() {
+cat << EOF
+
+Usage: $0 [options]
+
+Options:
+	-h      Show this message
+	-v      Verbose
+
+	Uses nsenter to provide a terminal to a Docker container.
+	Looks and feels like an ssh client.
+
+EOF
+}
+
+VERBOSE=
+
+while getopts "hv" OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         v)
+             VERBOSE=1
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
+
+_abort() {
+    echo ""
+    echo "Aborting..."
+    echo ""
+}
+trap _abort EXIT
+
+CheckReturnValue() {
+    if [[ "$?" != "0" ]]; then _abort; fi;
+}
+
+##############################################################
+####################### Set Options ##########################
+##############################################################
+
+CONTAINER_NAMES=$1
+
+if [[ -z "$CONTAINER_NAMES" ]]; then
+	NL=$'\n'
+	CONTAINER_NAMES=$(docker ps -q | sed ':a;N;$!ba;s/\n/ /g')
+	if [[ "$?" != "0" ]]; then
+		if [[ "$?" == "130" ]]; then
+            echo "] If you're on OSX, make sure boot2docker is working properly"
+            echo "] In all cases, make sure you're using the right user and command (to sudo or not to sudo)"
+        else
+            echo "] Error while trying to list docker containers"   
+        fi
+	fi
+fi
+
+if [[ -z "$CONTAINER_NAMES" ]]; then
+        usage
+        exit 1
+fi
+
+CONTAINER_NAMES=( ""${CONTAINER_NAMES[$@]}"" )
+CONTAINER_NAME=${CONTAINER_NAMES[0]}
+unset CONTAINER_NAMES[0]
+
+
+
+##############################################################
+####################### Init nsenter #########################
+########### https://github.com/jpetazzo/nsenter ##############
+##############################################################
+
+mkdir -p log/jpetazzo
+LOG_FILE=log/jpetazzo/nsenter
+
+type docker-enter >/dev/null 2>&1
+if [[ "$?" != "0" ]]; then
+
+    if [[ ! -f $LOG_FILE ]]; then
+        echo "] Pulling down a Docker image containing nsenter..." > log/jpetazzo/nsenter
+        docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
+        CheckReturnValue        
+    fi
+
+    if [[ "$(uname)" == 'Darwin' ]]; then
+        docker-enter() {
+            boot2docker ssh '[ -f /var/lib/boot2docker/nsenter ] || docker run --rm -v /var/lib/boot2docker/:/target jpetazzo/nsenter'
+            boot2docker ssh -t sudo /var/lib/boot2docker/docker-enter "$@"
+        }     
+    else
+        docker-enter() {
+            nsenter --target $1 --mount --uts --ipc --net --pid
+        }
+    fi
+
+fi
+
+
+##############################################################
+####################### Go do stuff!!!! ######################
+##############################################################
+
+echo ""
+echo -n "] Searching for a container matching \"$CONTAINER_NAME\"..."
+PID=$( docker inspect --format {{.State.Pid}} "$CONTAINER_NAME" 2>&1 & wait $! )
+
+CODE=$?
+if [[ "$CODE" != "0" ]]; then
+
+    echo " no such luck."
+    
+    if [[ "$CODE" == "2" ]]; then
+        echo "] No valid docker environment found"
+    elif [[ "$CODE" == "130" ]]; then 
+        echo "] Invalid permissions"
+        echo "] Tip: You can't alternate between using 'sudo' for some Docker commands and not others."
+    elif [[ "$CODE" == "1" ]]; then 
+        RUNNING_COUNT=$(docker ps | tail -n+2 | grep "" -c)
+        if [[ "$RUNNING_COUNT" == "" ]]; then
+            echo ""
+            echo "] You have no running Docker containers"
+            echo "] Start one with \`docker start\` and then try to enter it"
+            echo ""
+            echo "] Running \`docker ps\` to show available containers"
+            echo ""
+            
+            docker ps -n 5 | tail -n+2 | awk '{FS="[, \t][, \t]+"} BEGIN{ printf("%-20s %-30s %-15s %-10s\n","Container ID","Image","Created","Name")} {printf("%-20s %-30s %-15s %-10s\n",$1,$2,$4,$6)}'
+        fi
+        echo ""
+        echo "-----------------------------------------------"
+        echo ""
+    else
+        echo "] Unknown error with code $CODE"
+        echo "] nsenter said: $PID"
+    fi    
+    exit $CODE
+else 
+    echo ' container found! '"PID $PID"
+fi
+
+
+echo "] Calling docker-enter with \"$CONTAINER_NAME\""
+docker-enter "$CONTAINER_NAME"
+
+
