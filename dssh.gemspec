@@ -8,6 +8,6 @@ Gem::Specification.new do |s|
   s.email       = 'stevej@ucla.edu'
   s.files       = ["lib/dssh.rb", "share/dssh"]
   s.executables = ['dssh']
-  s.homepage    = 'http://rubygems.org/gems/dssh'
+  s.homepage    = 'https://github.com/smj10j/dssh'
   s.license     = 'MIT'
 end
