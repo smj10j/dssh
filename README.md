@@ -33,3 +33,8 @@ dssh
 
 
 If you require sudo to use docker, you'll also have to sudo dssh.
+
+
+
+
+[![dssh API Documentation](https://www.omniref.com/ruby/gems/dssh.png)](https://www.omniref.com/ruby/gems/dssh)
