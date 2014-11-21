@@ -1,8 +1,8 @@
-cache: 
-  bundler: true
-  apt: true
-  directories:
-    - vendor/bundle
+#cache: 
+#  bundler: true
+#  apt: true
+#  directories:
+#    - vendor/bundle
 
 language: ruby
 rvm:
