@@ -1,7 +1,8 @@
 cache: 
   bundler: true
   apt: true
-  - vendor/bundle
+  directories:
+    - vendor/bundle
 
 language: ruby
 rvm:
