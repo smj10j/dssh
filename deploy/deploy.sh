@@ -12,6 +12,7 @@ sed "s/$LAST_TAG/$TAG/" dssh.gemspec
 echo "Bumping version number..."
 echo $(( $VERSION + 1 )) > ./deploy/version 
 git commit -a
+git push
 
 echo "Adding tag $TAG to HEAD..."
 git tag $TAG
