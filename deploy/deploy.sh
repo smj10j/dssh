@@ -9,6 +9,8 @@ echo " version=$VERSION, tag=$TAG"
 
 echo "Replacing $LAST_TAG with $TAG in gemspec..."
 sed "s/$LAST_TAG/$TAG/" dssh.gemspec
+echo "Bumping version number..."
+echo $(( $VERSION + 1 )) > ./deploy/version 
 git commit -a
 
 echo "Adding tag $TAG to HEAD..."
@@ -20,8 +22,6 @@ read -n 1
 echo "Pushing with command 'git push --tags'..."
 git push --tags
 
-echo "Bumping version number..."
-echo $(( $VERSION + 1 )) > ./deploy/version 
 
 
 echo "Done!"
