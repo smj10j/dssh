@@ -1,10 +1,11 @@
 docker-dssh
 ====
 
-*Note: The gem has been renamed from 'dssh' to 'docker-dssh'*
 
 Uses nsenter to provide a terminal to a Docker container. Looks and feels like an ssh client.
 
+
+*Note: The gem has been renamed from 'dssh' to 'docker-dssh'*
 
 
 Installation
