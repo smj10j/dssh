@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
 
   s.name          = 'docker-dssh'
-  s.version       = '0.1.0'
+  s.version       = '0.1.1'
   s.date          = '2014-10-16'
   s.summary       = 'Docker ssh'
   s.description   = 'Uses nsenter to provide a terminal to a Docker container. Looks and feels like an ssh client. Was previously just named "dssh".'
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.files         = ['lib/dssh.rb', 'share/dssh']
   
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'bundler', '~> 0'
+  s.add_development_dependency 'rake', '~> 0'
   
 end
