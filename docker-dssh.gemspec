@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.files         = ['lib/dssh.rb', 'share/dssh']
   
-  s.add_development_dependency 'bundler', '~> 0'
-  s.add_development_dependency 'rake', '~> 0'
+  s.add_development_dependency 'bundler'
+  s.add_development_dependency 'rake'
   
 end

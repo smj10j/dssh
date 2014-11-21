@@ -2,7 +2,7 @@
 set -e
 
 echo -n "Loading version and tag..."
-VERSION=$(cat ./deploy/version)
+VERSION=$(cat ./version)
 TAG=$(echo $(( $VERSION/100 )).$(( $VERSION/10 )).$(( $VERSION - (($VERSION/10)*10) )))
 LAST_TAG=$(echo $(( ($VERSION-1)/100 )).$(( ($VERSION-1)/10 )).$(( ($VERSION-1) - ((($VERSION-1)/10)*10) )))
 echo " version=$VERSION, tag=$TAG"
@@ -10,7 +10,7 @@ echo " version=$VERSION, tag=$TAG"
 echo "Replacing $LAST_TAG with $TAG in gemspec..."
 sed "s/$LAST_TAG/$TAG/" docker-dssh.gemspec
 echo "Bumping version number..."
-echo $(( $VERSION + 1 )) > ./deploy/version 
+echo $(( $VERSION + 1 )) > ./version
 git commit -a
 git push
 
