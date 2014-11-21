@@ -16,5 +16,6 @@ Gem::Specification.new do |s|
   s.files         = ["lib/dssh.rb", "share/dssh"]
   
   s.add_development_dependency "bundler", "~> 1.7"
+  s.add_development_dependency "rake", "~> 10.0.0"
   
 end

@@ -11,6 +11,7 @@
 /tmp/
 log/
 deploy.key*
+vendor/
 
 ## Specific to RubyMotion:
 .dat*
