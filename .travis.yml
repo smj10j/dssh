@@ -14,7 +14,7 @@ deploy:
   provider: rubygems
   api_key: "38d57d2ad2520318f2155c1cc717925f"
 gem:
-  master: docker-dssh
+    master: docker-dssh
 on:
   tags: true
   branch: master
