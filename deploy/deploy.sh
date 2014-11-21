@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+git pull -r
+
 echo -n "Loading version and tag..."
 VERSION=$(cat ./version)
 TAG=$(echo $(( $VERSION/100 )).$(( $VERSION/10 )).$(( $VERSION - (($VERSION/10)*10) )))
