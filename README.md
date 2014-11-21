@@ -13,6 +13,8 @@ Installation
 gem install dssh
 ```
 
+[![Build Status](https://travis-ci.org/smj10j/docker-dssh.svg?branch=master)](https://travis-ci.org/smj10j/docker-dssh)
+
 
 Usage
 -----
@@ -38,3 +40,7 @@ If you require sudo to use docker, you'll also have to sudo dssh.
 
 
 [![dssh API Documentation](https://www.omniref.com/ruby/gems/dssh.png)](https://www.omniref.com/ruby/gems/dssh)
+
+
+
+
