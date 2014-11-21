@@ -1,5 +1,5 @@
 cache: bundler
-
+language: ruby
 rvm:
   - jruby
   - 2.1.0
@@ -11,4 +11,5 @@ deploy:
   api_key: "38d57d2ad2520318f2155c1cc717925f"
   on:
     tags: true
+
 
