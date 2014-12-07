@@ -16,15 +16,8 @@ echo $(( $VERSION + 1 )) > ./version
 git commit -a -m "Release $TAG"
 git push
 
-echo "Adding tag $TAG to HEAD..."
-git tag $TAG
-
-echo -n "Press any key to push to Github (ctrl-c to abort)..."
-read -n 1
-
-echo "Pushing with command 'git push --tags'..."
-git push --tags
-
+echo "Running rake release to build gem and push to RubyGems..."
+rake release
 
 
 echo "Done!"
