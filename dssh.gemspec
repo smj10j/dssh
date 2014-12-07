@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'dssh'
-  s.version     = '0.0.9'
+  s.version     = '0.1.0'
   s.date        = '2014-10-16'
   s.summary     = "Docker ssh"
   s.description = "Uses nsenter to provide a terminal to a Docker container. Looks and feels like an ssh client."

@@ -10,7 +10,7 @@ LAST_TAG=$(echo $(( ($VERSION-1)/100 )).$(( ($VERSION-1)/10 )).$(( ($VERSION-1) 
 echo " version=$VERSION, tag=$TAG"
 
 echo "Replacing $LAST_TAG with $TAG in gemspec..."
-sed "s/$LAST_TAG/$TAG/" dssh.gemspec
+sed -i "s/$LAST_TAG/$TAG/" dssh.gemspec
 echo "Bumping version number..."
 echo $(( $VERSION + 1 )) > ./version
 git commit -a
